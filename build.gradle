@@ -18,9 +18,7 @@ buildscript {
 group = 'potato.angry'
 version = '0.1.0'
 
-apply plugin: 'idea'
 apply plugin: 'kotlin2js'
-apply plugin: 'maven-publish'
 apply plugin: 'com.moowork.node'
 
 def module = 'kotato'
@@ -158,13 +156,6 @@ task runJest(type: NodeTask, dependsOn: [compileTestKotlin2Js, populateTestModul
     args = [projectDir.toURI().relativize(compileTestKotlin2Js.outputFile.toURI())]
 }
 
-//test {
-//    ignoreFailures = true
-//    maxHeapSize = "2g"
-//
-//    dependsOn runJest
-// }
-
 build {
     dependsOn clean
     dependsOn npmBuild
@@ -192,9 +183,6 @@ npm_publish {
     execOverrides {
         it.workingDir = npmBuildDir
     }
-}
-
-publishing {
 }
 
 task publishFullRelease {
