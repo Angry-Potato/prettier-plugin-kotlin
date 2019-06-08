@@ -1,6 +1,6 @@
 {
   "name": "kotato",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Kotlin parser for JS.",
   "main": "kotato.js",
   "author": "Liam Humphreys",
