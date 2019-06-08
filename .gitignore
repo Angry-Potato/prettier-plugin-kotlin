@@ -28,3 +28,4 @@ hs_err_pid*
 build
 
 pkg
+node_modules
