@@ -1,0 +1,67 @@
+{
+  "name": "kotato",
+  "version": "0.2.0",
+  "description": "Kotlin parser for JS.",
+  "main": "kotato.js",
+  "author": "Liam Humphreys",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Angry-Potato/kotato.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Angry-Potato/kotato/issues"
+  },
+  "keywords": [
+    "kotlin",
+    "kotlin2js",
+    "parser"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/build/classes/kotlin/test/"
+    ],
+    "testMatch": [
+      "**/kotato_test.js"
+    ],
+    "modulePaths": [
+      "/build/node_modules/"
+    ],
+    "reporters": [
+      "default",
+      [
+        "./node_modules/jest-html-reporter",
+        {
+          "pageTitle": "Tests for kotato",
+          "outputPath": "./build/reports/jest/index.html",
+          "theme": "darkTheme",
+          "includeConsoleLog": true
+        }
+      ]
+    ],
+    "testURL": "http://localhost/",
+    "browser": true,
+    "verbose": true,
+    "testEnvironment": "jsdom"
+  },
+  "files": [
+    "**/**/*.kjsm",
+    "*.js",
+    "*.js.map",
+    "*.meta.js",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "jest-html-reporter": "^2.5.0",
+    "kotlin": "^1.3.31"
+  },
+  "peerDependencies": {
+    "kotlin": "^1.2.60"
+  }
+}
