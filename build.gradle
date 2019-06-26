@@ -14,9 +14,16 @@ buildscript {
 
 apply plugin: 'kotlin2js'
 
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
+    compile 'com.github.cretz.kastree:kastree-ast-psi:0.4.0'
+    compile 'com.github.cretz.kastree:kastree-ast-common:0.4.0'
+}
+
 sourceSets {
-    main.kotlin.srcDirs += "src/main/kotato"
-    test.kotlin.srcDirs += "src/test/kotato"
+    main.kotlin.srcDirs += "src/main/kotlin/kotato"
+    test.kotlin.srcDirs += "src/test/kotlin/kotato"
 }
 
 compileKotlin2Js {
@@ -33,11 +40,6 @@ repositories {
     maven {
         url "http://dl.bintray.com/kotlin/kotlin-eap-1.3.31"
     }
-}
-
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
 }
 
 clean.doFirst() {
