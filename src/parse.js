@@ -16,6 +16,5 @@ module.exports = (text, _parsers, _opts) => {
   }
 
   const response = child.stdout.toString();
-
   return JSON.parse(response);
 };

@@ -1,20 +1,12 @@
-const { printComments } = require("./utils");
-const nodes = require("./nodes");
+const { assignType, nodes } = require("./nodes");
 
 module.exports = (path, opts, print) => {
-  const { type, body, comments, start } = path.getValue();
+  const node = path.getValue();
 
-  if (type in nodes) {
-    const printed = nodes[type](path, opts, print);
+  const typedNode = assignType(node);
 
-    if (comments) {
-      return printComments(printed, start, comments);
-    }
-    return printed;
-  }
-
-  if (type && type[0] === "@") {
-    return body;
+  if (typedNode.type) {
+    return nodes[typedNode.type](path, opts, print);
   }
 
   throw new Error(

@@ -1,28 +1,25 @@
-module.exports = Object.assign(
-  {},
-  require("./nodes/alias"),
-  require("./nodes/args"),
-  require("./nodes/arrays"),
-  require("./nodes/assign"),
-  require("./nodes/blocks"),
-  require("./nodes/calls"),
-  require("./nodes/case"),
-  require("./nodes/commands"),
-  require("./nodes/conditionals"),
-  require("./nodes/constants"),
-  require("./nodes/flow"),
-  require("./nodes/hashes"),
-  require("./nodes/hooks"),
-  require("./nodes/ints"),
-  require("./nodes/lambdas"),
-  require("./nodes/loops"),
-  require("./nodes/massign"),
-  require("./nodes/methods"),
-  require("./nodes/operators"),
-  require("./nodes/params"),
-  require("./nodes/regexp"),
-  require("./nodes/rescue"),
-  require("./nodes/scopes"),
-  require("./nodes/statements"),
-  require("./nodes/strings")
-);
+const NODE_TYPES = {
+  PACKAGE_DECLARATION: "package-declaration"
+};
+
+const nodes = {
+  [NODE_TYPES.PACKAGE_DECLARATION]: require(`./nodes/${NODE_TYPES.PACKAGE_DECLARATION}`)
+};
+
+const isPkgDeclaration = node => node && node.pkg && node.pkg.names;
+
+const assignType = node => {
+  if (isPkgDeclaration(node)) {
+    return { ...node, type: NODE_TYPES.PACKAGE_DECLARATION };
+  }
+
+  throw new Error(
+    `Unsupported node encountered: ${JSON.stringify(node, null, 2)}`
+  );
+};
+
+module.exports = {
+  NODE_TYPES,
+  assignType,
+  nodes
+};

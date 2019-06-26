@@ -1,5 +1,9 @@
 const prettier = require("prettier");
-const code = `package foo
+const code = `
+package me.foo
+class Jobbie {
+private fun no()
+}
 
 fun bar() {
     // Print hello

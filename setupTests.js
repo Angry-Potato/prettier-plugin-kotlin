@@ -6,25 +6,28 @@ const readline = require("readline");
 // eslint-disable-next-line no-underscore-dangle
 const { formatAST } = prettier.__debug;
 
-const parser = spawn("./src/kotato");
-afterAll(() => parser.kill());
-
-const rl = readline.createInterface({
-  input: parser.stdout,
-  output: parser.stdin
-});
-
 const checkFormat = (before, after, config) =>
   new Promise(resolve => {
     const opts = Object.assign({ parser: "kotlin", plugins: ["."] }, config);
+    const child = spawnSync(
+      "java",
+      ["-jar", path.join(__dirname, "./src/kotato"), "parse"],
+      {
+        input: before
+      }
+    );
 
-    rl.question(`${before}\n---\n`, response => {
-      const { formatted } = formatAST(JSON.parse(response), opts);
+    const error = child.stderr.toString();
+    if (error) {
+      throw new Error(error);
+    }
+    const response = child.stdout.toString();
 
-      resolve({
-        pass: formatted === `${after}\n`,
-        message: () => `Expected:\n${after}\nReceived:\n${formatted}`
-      });
+    const { formatted } = formatAST(JSON.parse(response), opts);
+
+    resolve({
+      pass: formatted === `${after}\n`,
+      message: () => `Expected:\n${after}\nReceived:\n${formatted}`
     });
   });
 
