@@ -29,3 +29,5 @@ build
 
 pkg
 node_modules
+bin
+*.kexe
