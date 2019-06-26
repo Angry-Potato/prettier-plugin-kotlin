@@ -1,0 +1,27 @@
+{
+  "name": "plugin-kotlin",
+  "version": "1.0.0",
+  "description": "prettier plugin for the Kotlin programming language.",
+  "main": "src/kotlin.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Angry-Potato/plugin-kotlin.git"
+  },
+  "keywords": [
+    "kotlin",
+    "prettier",
+    "plugin",
+    "ast",
+    "parse",
+    "format"
+  ],
+  "author": "Liam Humphreys",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Angry-Potato/plugin-kotlin/issues"
+  },
+  "homepage": "https://github.com/Angry-Potato/plugin-kotlin#readme"
+}
