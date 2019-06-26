@@ -25,6 +25,16 @@
   },
   "homepage": "https://github.com/Angry-Potato/plugin-kotlin#readme",
   "devDependencies": {
-    "jest": "^24.8.0"
+    "husky": "^2.5.0",
+    "jest": "^24.8.0",
+    "pretty-quick": "^1.11.1"
+  },
+  "dependencies": {
+    "prettier": "^1.18.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
