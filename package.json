@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/Angry-Potato/plugin-kotlin/issues"
   },
-  "homepage": "https://github.com/Angry-Potato/plugin-kotlin#readme"
+  "homepage": "https://github.com/Angry-Potato/plugin-kotlin#readme",
+  "devDependencies": {
+    "jest": "^24.8.0"
+  }
 }
