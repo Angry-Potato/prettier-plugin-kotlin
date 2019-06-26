@@ -1,0 +1,150 @@
+const {
+  concat,
+  group,
+  hardline,
+  indent,
+  join,
+  literalline,
+  softline
+} = require("prettier");
+const { concatBody, empty, makeList, prefix, surround } = require("../utils");
+const escapePattern = require("../escapePattern");
+
+// If there is some part of this string that matches an escape sequence or that
+// contains the interpolation pattern ("#{"), then we are locked into whichever
+// quote the user chose. (If they chose single quotes, then double quoting
+// would activate the escape sequence, and if they chose double quotes, then
+// single quotes would deactivate it.)
+const isQuoteLocked = string =>
+  string.body.some(
+    part =>
+      part.type === "@tstring_content" &&
+      (escapePattern.test(part.body) || part.body.includes("#{"))
+  );
+
+// A string is considered to be able to use single quotes if it contains only
+// plain string content and that content does not contain a single quote.
+const isSingleQuotable = string =>
+  string.body.every(
+    part => part.type === "@tstring_content" && !part.body.includes("'")
+  );
+
+const getStringQuote = (string, preferSingleQuotes) => {
+  if (isQuoteLocked(string)) {
+    return string.quote;
+  }
+
+  return preferSingleQuotes && isSingleQuotable(string) ? "'" : '"';
+};
+
+const quotePattern = new RegExp("\\\\([\\s\\S])|(['\"])", "g");
+
+const makeString = (content, enclosingQuote) => {
+  const otherQuote = enclosingQuote === '"' ? "'" : enclosingQuote;
+
+  // Escape and unescape single and double quotes as needed to be able to
+  // enclose `content` with `enclosingQuote`.
+  return content.replace(quotePattern, (match, escaped, quote) => {
+    if (escaped === otherQuote) {
+      return escaped;
+    }
+
+    if (quote === enclosingQuote) {
+      return `\\${quote}`;
+    }
+
+    if (quote) {
+      return quote;
+    }
+
+    return `\\${escaped}`;
+  });
+};
+
+module.exports = {
+  "@CHAR": (path, { preferSingleQuotes }, _print) => {
+    const { body } = path.getValue();
+
+    if (body.length !== 2) {
+      return body;
+    }
+
+    const quote = preferSingleQuotes ? "'" : '"';
+    return body.length === 2 ? concat([quote, body.slice(1), quote]) : body;
+  },
+  dyna_symbol: (path, opts, print) => {
+    const { quote } = path.getValue().body[0];
+
+    return concat([":", quote, concat(path.call(print, "body", 0)), quote]);
+  },
+  heredoc: (path, opts, print) => {
+    const { beging, ending } = path.getValue();
+
+    return concat([
+      beging,
+      concat([literalline].concat(path.map(print, "body"))),
+      ending
+    ]);
+  },
+  string: makeList,
+  string_concat: (path, opts, print) =>
+    group(
+      concat([
+        path.call(print, "body", 0),
+        " \\",
+        indent(concat([hardline, path.call(print, "body", 1)]))
+      ])
+    ),
+  string_dvar: surround("#{", "}"),
+  string_embexpr: (path, opts, print) =>
+    group(
+      concat([
+        "#{",
+        indent(concat([softline, path.call(print, "body", 0)])),
+        concat([softline, "}"])
+      ])
+    ),
+  string_literal: (path, { preferSingleQuotes }, print) => {
+    const string = path.getValue().body[0];
+
+    // If this string is actually a heredoc, bail out and return to the print
+    // function for heredocs
+    if (string.type === "heredoc") {
+      return path.call(print, "body", 0);
+    }
+
+    // If the string is empty, it will not have any parts, so just print out the
+    // quotes corresponding to the config
+    if (string.body.length === 0) {
+      return preferSingleQuotes ? "''" : '""';
+    }
+
+    const quote = getStringQuote(string, preferSingleQuotes);
+    const parts = [];
+
+    string.body.forEach((part, index) => {
+      if (part.type === "@tstring_content") {
+        // In this case, the part of the string is just regular string content
+        parts.push(makeString(part.body, quote));
+      } else {
+        // In this case, the part of the string is an embedded expression
+        parts.push(path.call(print, "body", 0, "body", index));
+      }
+    });
+
+    return concat([quote].concat(parts).concat([quote]));
+  },
+  symbol: prefix(":"),
+  symbol_literal: concatBody,
+  word_add: concatBody,
+  word_new: empty,
+  xstring: makeList,
+  xstring_literal: (path, opts, print) =>
+    group(
+      concat([
+        "`",
+        indent(concat([softline, join(softline, path.call(print, "body", 0))])),
+        concat([softline, "`"])
+      ])
+    )
+};
