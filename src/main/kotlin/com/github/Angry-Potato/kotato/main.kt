@@ -33,15 +33,13 @@ class Kotato : NoRunCliktCommand(help = "Simple little cli app to work with kotl
     }
 }
 
-class Parse : CliktCommand(help = "Parses a kotlin file and outputs its AST in JSON") {
+class Parse : CliktCommand(help = "Parses kotlin code from STDIN and outputs its AST in JSON") {
     init {
         context { helpFormatter = ColorHelpFormatter() }
     }
 
-    val fileName by argument(help = "file to parse")
-
     override fun run() {
-        val code = File(fileName).inputStream().readBytes().toString(Charsets.UTF_8)
+        val code = generateSequence(::readLine).joinToString("\n")
         val extrasMap = Converter.WithExtras()
         val file = Parser(extrasMap).parseFile(code)
         val gson = GsonBuilder().setPrettyPrinting().create()
