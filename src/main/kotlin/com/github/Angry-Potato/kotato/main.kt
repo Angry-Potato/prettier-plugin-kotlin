@@ -7,9 +7,6 @@ import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.output.CliktHelpFormatter
 import com.github.ajalt.clikt.output.HelpFormatter
 import com.github.ajalt.clikt.parameters.arguments.argument
-import com.github.ajalt.clikt.parameters.arguments.multiple
-import com.github.ajalt.clikt.parameters.options.flag
-import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.mordant.TermColors
 import kastree.ast.psi.Parser
 import kastree.ast.psi.Converter
@@ -30,12 +27,18 @@ class ColorHelpFormatter : CliktHelpFormatter() {
     override fun optionMetavar(option: HelpFormatter.ParameterHelp.Option) = tc.green(super.optionMetavar(option))
 }
 
-class Cli : CliktCommand(help = "An example of a custom help formatter that uses ansi colors") {
+class Kotato : NoRunCliktCommand(help = "Simple little cli app to work with kotlin ASTs") {
+    init {
+        context { helpFormatter = ColorHelpFormatter() }
+    }
+}
+
+class Parse : CliktCommand(help = "Parses a kotlin file and outputs its AST in JSON") {
     init {
         context { helpFormatter = ColorHelpFormatter() }
     }
 
-    val fileName by argument(help = "file to input")
+    val fileName by argument(help = "file to parse")
 
     override fun run() {
         val code = File(fileName).inputStream().readBytes().toString(Charsets.UTF_8)
@@ -46,4 +49,4 @@ class Cli : CliktCommand(help = "An example of a custom help formatter that uses
     }
 }
 
-fun main(args: Array<String>) = Cli().main(args)
+fun main(args: Array<String>) = Kotato().subcommands(Parse()).main(args)
