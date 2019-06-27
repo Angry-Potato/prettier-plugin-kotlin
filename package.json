@@ -4,6 +4,7 @@
   "description": "prettier plugin for the Kotlin programming language.",
   "main": "src/kotlin.js",
   "scripts": {
+    "kotato": "cd kotato && ./gradlew shadowJar && cp -f build/libs/kotato*.jar ../src/kotato",
     "test": "jest"
   },
   "repository": {
