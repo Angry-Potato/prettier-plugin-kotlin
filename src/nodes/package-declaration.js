@@ -1,6 +1,6 @@
 const {
   doc: {
-    builders: { concat, hardline }
+    builders: { concat, literalline }
   }
 } = require("prettier");
 
@@ -10,5 +10,5 @@ module.exports = (path, opts, print) => {
     .pkg.names.join(".")
     .toLowerCase();
 
-  return concat(["package ", packageName, hardline]);
+  return concat(["package ", packageName, literalline, literalline]);
 };
