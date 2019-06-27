@@ -27,7 +27,10 @@ const checkFormat = (before, after, config) =>
 
     resolve({
       pass: formatted === `${after}\n`,
-      message: () => `Expected:\n${after}\nReceived:\n${formatted}`
+      message: () =>
+        `Expected:\n${JSON.stringify(after)}\nReceived:\n${JSON.stringify(
+          formatted
+        )}`
     });
   });
 

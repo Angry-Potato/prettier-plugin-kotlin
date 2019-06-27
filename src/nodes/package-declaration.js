@@ -5,9 +5,7 @@ const {
 } = require("prettier");
 
 module.exports = (path, opts, print) => {
-  const {
-    pkg: { names: names }
-  } = path.getValue();
+  const { names: names } = path.getValue();
 
-  return concat(["package ", names.join("."), literalline, literalline]);
+  return concat(["package ", names.join("."), literalline]);
 };

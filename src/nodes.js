@@ -1,16 +1,29 @@
 const NODE_TYPES = {
-  PACKAGE_DECLARATION: "package-declaration"
+  ROOT_NODE: "root-node",
+  PACKAGE_DECLARATION: "package-declaration",
+  IMPORT_STATEMENT: "import-statement"
 };
 
 const nodes = {
-  [NODE_TYPES.PACKAGE_DECLARATION]: require(`./nodes/${NODE_TYPES.PACKAGE_DECLARATION}`)
+  [NODE_TYPES.ROOT_NODE]: require(`./nodes/${NODE_TYPES.ROOT_NODE}`),
+  [NODE_TYPES.PACKAGE_DECLARATION]: require(`./nodes/${NODE_TYPES.PACKAGE_DECLARATION}`),
+  [NODE_TYPES.IMPORT_STATEMENT]: require(`./nodes/${NODE_TYPES.IMPORT_STATEMENT}`)
 };
 
-const isPkgDeclaration = node => node && node.pkg && node.pkg.names;
+const isRootNode = node => node && node.anns && node.imports && node.decls;
+
+const isPkgDeclaration = node => node && node.mods && node.names;
+
+const isImportStatement = node =>
+  node && node.hasOwnProperty("wildcard") && node.names;
 
 const assignType = node => {
-  if (isPkgDeclaration(node)) {
+  if (isRootNode(node)) {
+    return { ...node, type: NODE_TYPES.ROOT_NODE };
+  } else if (isPkgDeclaration(node)) {
     return { ...node, type: NODE_TYPES.PACKAGE_DECLARATION };
+  } else if (isImportStatement(node)) {
+    return { ...node, type: NODE_TYPES.IMPORT_STATEMENT };
   }
 
   throw new Error(
