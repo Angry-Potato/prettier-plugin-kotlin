@@ -12,8 +12,8 @@ describe("package-declaration", () => {
       "package com.github.thing.app\n"
     ));
 
-  test("uppercase", () =>
-    expect("package COM.github.thing.APP").toChangeFormat(
-      "package com.github.thing.app\n"
+  test("differing cases", () =>
+    expect("package COM.gitHub.thing.APP").toChangeFormat(
+      "package COM.gitHub.thing.APP\n"
     ));
 });
