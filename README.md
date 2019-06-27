@@ -22,6 +22,14 @@
 npm install
 ```
 
+## VSCode
+
+To use this plugin with the VSCode Prettier plugin, navigate to the VSCode Prettier plugin install directory (`$HOME/.vscode/extensions/esbenp.prettier-vscode-<VERSION>` on ubuntu), and install this package: `npm install --save prettier-plugin-kotlin`.
+
+The format on save functionality doesn't appear to work when plugins are added to extensions in this fashion, but you can still use the plugin by right clicking in your Kotlin file, and selecting `Format Document`.
+
+Follow [this PR](https://github.com/prettier/prettier-vscode/pull/757) for more info.
+
 ## Run tests
 
 ```sh
