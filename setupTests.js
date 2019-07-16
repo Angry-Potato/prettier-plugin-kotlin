@@ -6,8 +6,8 @@ const readline = require("readline");
 // eslint-disable-next-line no-underscore-dangle
 const { formatAST } = prettier.__debug;
 
-const checkFormat = (before, after, config) =>
-  new Promise(resolve => {
+const checkFormat = (before, after, config) => {
+  return new Promise(resolve => {
     const opts = Object.assign({ parser: "kotlin", plugins: ["."] }, config);
     const child = spawnSync(
       "java",
@@ -33,6 +33,7 @@ const checkFormat = (before, after, config) =>
         )}`
     });
   });
+};
 
 const realFormat = content =>
   prettier.format(content, {

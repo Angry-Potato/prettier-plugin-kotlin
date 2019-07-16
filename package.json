@@ -5,7 +5,8 @@
   "main": "src/kotlin.js",
   "scripts": {
     "kotato": "cd kotato && ./gradlew shadowJar && cp -f build/libs/kotato*.jar ../src/kotato",
-    "test": "jest"
+    "test": "jest",
+    "parse-example": "prettier --plugin . example.kt"
   },
   "repository": {
     "type": "git",
