@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/Angry-Potato/prettier-plugin-kotlin#readme",
   "devDependencies": {
-    "husky": "^2.5.0",
+    "husky": "^2.7.0",
     "jest": "^24.8.0",
     "pretty-quick": "^1.11.1"
   },
