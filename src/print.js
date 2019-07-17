@@ -2,6 +2,7 @@ const { assignType, nodes } = require("./nodes");
 
 module.exports = (path, opts, print) => {
   const node = path.getValue();
+
   if (!node) {
     return "";
   }

@@ -1,6 +1,6 @@
 const {
   doc: {
-    builders: { concat, hardline }
+    builders: { concat, hardline, indent }
   }
 } = require("prettier");
 
@@ -12,11 +12,22 @@ module.exports = (path, opts, print) => {
       ? concat([...path.map(print, "mods"), " "])
       : "";
 
+  const members =
+    node.members && node.members.length > 0
+      ? concat([
+          " {",
+          indent(concat([hardline, ...path.map(print, "members")])),
+          hardline,
+          "}"
+        ])
+      : "";
+
   return concat([
     prefix,
     "class ",
     node.name,
     path.call(print, "primaryConstructor"),
+    members,
     hardline
   ]);
 };

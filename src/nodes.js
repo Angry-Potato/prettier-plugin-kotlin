@@ -7,7 +7,11 @@ const NODE_TYPES = {
   PARAMETER: "parameter",
   MODIFIER: "modifier",
   ANNOTATION: "annotation",
-  ARG: "arg"
+  ARG: "arg",
+  MEMBER: "member",
+  NAME: "name",
+  EXPRESSION: "expression",
+  STRING: "string"
 };
 
 const nodes = {
@@ -19,7 +23,11 @@ const nodes = {
   [NODE_TYPES.PARAMETER]: require(`./nodes/${NODE_TYPES.PARAMETER}`),
   [NODE_TYPES.MODIFIER]: require(`./nodes/${NODE_TYPES.MODIFIER}`),
   [NODE_TYPES.ANNOTATION]: require(`./nodes/${NODE_TYPES.ANNOTATION}`),
-  [NODE_TYPES.ARG]: require(`./nodes/${NODE_TYPES.ARG}`)
+  [NODE_TYPES.ARG]: require(`./nodes/${NODE_TYPES.ARG}`),
+  [NODE_TYPES.MEMBER]: require(`./nodes/${NODE_TYPES.MEMBER}`),
+  [NODE_TYPES.NAME]: require(`./nodes/${NODE_TYPES.NAME}`),
+  [NODE_TYPES.EXPRESSION]: require(`./nodes/${NODE_TYPES.EXPRESSION}`),
+  [NODE_TYPES.STRING]: require(`./nodes/${NODE_TYPES.STRING}`)
 };
 
 const isRootNode = node => node.anns && node.imports && node.decls;
@@ -40,6 +48,21 @@ const isModifier = node => node.keyword || node.anns;
 const isAnnotation = node => node.names && node.typeArgs && node.args;
 
 const isArg = node => node.hasOwnProperty("asterisk") && node.expr;
+
+const isMember = node =>
+  node.hasOwnProperty("readOnly") &&
+  node.hasOwnProperty("delegated") &&
+  node.mods &&
+  node.typeParams &&
+  node.vars &&
+  node.typeConstraints &&
+  node.expr;
+
+const isName = node => node.hasOwnProperty("name");
+
+const isExpression = node => node.hasOwnProperty("raw") && node.elems;
+
+const isString = node => node.hasOwnProperty("str");
 
 const assignType = node => {
   if (!node) {
@@ -64,6 +87,14 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.ANNOTATION };
   } else if (isArg(node)) {
     return { ...node, astType: NODE_TYPES.ARG };
+  } else if (isMember(node)) {
+    return { ...node, astType: NODE_TYPES.MEMBER };
+  } else if (isName(node)) {
+    return { ...node, astType: NODE_TYPES.NAME };
+  } else if (isExpression(node)) {
+    return { ...node, astType: NODE_TYPES.EXPRESSION };
+  } else if (isString(node)) {
+    return { ...node, astType: NODE_TYPES.STRING };
   }
 
   throw new Error(
