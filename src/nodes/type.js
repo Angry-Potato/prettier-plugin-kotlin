@@ -6,6 +6,5 @@ const {
 
 module.exports = (path, opts, print) => {
   const node = path.getValue();
-  const type = node.type ? concat([": ", path.call(print, "type")]) : "";
-  return concat([node.name, type]);
+  return node.ref.pieces[0].name;
 };

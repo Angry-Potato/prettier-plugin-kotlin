@@ -11,7 +11,8 @@ const NODE_TYPES = {
   MEMBER: "member",
   NAME: "name",
   EXPRESSION: "expression",
-  STRING: "string"
+  STRING: "string",
+  TYPE: "type"
 };
 
 const nodes = {
@@ -27,7 +28,8 @@ const nodes = {
   [NODE_TYPES.MEMBER]: require(`./nodes/${NODE_TYPES.MEMBER}`),
   [NODE_TYPES.NAME]: require(`./nodes/${NODE_TYPES.NAME}`),
   [NODE_TYPES.EXPRESSION]: require(`./nodes/${NODE_TYPES.EXPRESSION}`),
-  [NODE_TYPES.STRING]: require(`./nodes/${NODE_TYPES.STRING}`)
+  [NODE_TYPES.STRING]: require(`./nodes/${NODE_TYPES.STRING}`),
+  [NODE_TYPES.TYPE]: require(`./nodes/${NODE_TYPES.TYPE}`)
 };
 
 const isRootNode = node => node.anns && node.imports && node.decls;
@@ -64,6 +66,8 @@ const isExpression = node => node.hasOwnProperty("raw") && node.elems;
 
 const isString = node => node.hasOwnProperty("str");
 
+const isType = node => node.mods && node.ref;
+
 const assignType = node => {
   if (!node) {
     throw new Error(`Undefined node encountered`);
@@ -95,6 +99,8 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.EXPRESSION };
   } else if (isString(node)) {
     return { ...node, astType: NODE_TYPES.STRING };
+  } else if (isType(node)) {
+    return { ...node, astType: NODE_TYPES.TYPE };
   }
 
   throw new Error(
