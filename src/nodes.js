@@ -8,7 +8,7 @@ const NODE_TYPES = {
   MODIFIER: "modifier",
   ANNOTATION: "annotation",
   ARG: "arg",
-  MEMBER: "member",
+  VARIABLE_DECLARATION: "variable-declaration",
   NAME: "name",
   EXPRESSION: "expression",
   STRING: "string",
@@ -25,7 +25,7 @@ const nodes = {
   [NODE_TYPES.MODIFIER]: require(`./nodes/${NODE_TYPES.MODIFIER}`),
   [NODE_TYPES.ANNOTATION]: require(`./nodes/${NODE_TYPES.ANNOTATION}`),
   [NODE_TYPES.ARG]: require(`./nodes/${NODE_TYPES.ARG}`),
-  [NODE_TYPES.MEMBER]: require(`./nodes/${NODE_TYPES.MEMBER}`),
+  [NODE_TYPES.VARIABLE_DECLARATION]: require(`./nodes/${NODE_TYPES.VARIABLE_DECLARATION}`),
   [NODE_TYPES.NAME]: require(`./nodes/${NODE_TYPES.NAME}`),
   [NODE_TYPES.EXPRESSION]: require(`./nodes/${NODE_TYPES.EXPRESSION}`),
   [NODE_TYPES.STRING]: require(`./nodes/${NODE_TYPES.STRING}`),
@@ -51,7 +51,7 @@ const isAnnotation = node => node.names && node.typeArgs && node.args;
 
 const isArg = node => node.hasOwnProperty("asterisk") && node.expr;
 
-const isMember = node =>
+const isVariableDeclaration = node =>
   node.hasOwnProperty("readOnly") &&
   node.hasOwnProperty("delegated") &&
   node.mods &&
@@ -91,8 +91,8 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.ANNOTATION };
   } else if (isArg(node)) {
     return { ...node, astType: NODE_TYPES.ARG };
-  } else if (isMember(node)) {
-    return { ...node, astType: NODE_TYPES.MEMBER };
+  } else if (isVariableDeclaration(node)) {
+    return { ...node, astType: NODE_TYPES.VARIABLE_DECLARATION };
   } else if (isName(node)) {
     return { ...node, astType: NODE_TYPES.NAME };
   } else if (isExpression(node)) {
