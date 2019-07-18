@@ -26,7 +26,7 @@ describe("variable-declaration", () => {
     get() = this.size == 0
 }`).toMatchFormat());
 
-    test.only("using constructor arg to init", () =>
+    test("using constructor arg to init", () =>
       expect(`class InitOrderDemoa(name: String) {
   val firstProperty = "First property: $name".also(::println)
 }`).toMatchFormat());
