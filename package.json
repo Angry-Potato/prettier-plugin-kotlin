@@ -4,9 +4,10 @@
   "description": "prettier plugin for the Kotlin programming language.",
   "main": "src/kotlin.js",
   "scripts": {
-    "kotato": "cd kotato && ./gradlew shadowJar && cp -f build/libs/kotato*.jar ../src/kotato",
+    "regen-kotato": "cd kotato && ./gradlew shadowJar && cp -f build/libs/kotato*.jar ../src/kotato",
     "test": "jest",
-    "parse-example": "prettier --plugin . example.kt"
+    "parse-example": "prettier --plugin . example.kt",
+    "release": "np"
   },
   "repository": {
     "type": "git",
@@ -29,7 +30,8 @@
   "devDependencies": {
     "husky": "^2.7.0",
     "jest": "^24.8.0",
-    "pretty-quick": "^1.11.1"
+    "pretty-quick": "^1.11.1",
+    "np": "*"
   },
   "dependencies": {
     "prettier": "^1.18.2"
