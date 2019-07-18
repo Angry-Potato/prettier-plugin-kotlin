@@ -13,7 +13,8 @@ const NODE_TYPES = {
   EXPRESSION: "expression",
   STRING: "string",
   TYPE: "type",
-  INTEGER: "integer"
+  INTEGER: "integer",
+  OPERATOR: "operator"
 };
 
 const nodes = {
@@ -31,7 +32,8 @@ const nodes = {
   [NODE_TYPES.EXPRESSION]: require(`./nodes/${NODE_TYPES.EXPRESSION}`),
   [NODE_TYPES.STRING]: require(`./nodes/${NODE_TYPES.STRING}`),
   [NODE_TYPES.TYPE]: require(`./nodes/${NODE_TYPES.TYPE}`),
-  [NODE_TYPES.INTEGER]: require(`./nodes/${NODE_TYPES.INTEGER}`)
+  [NODE_TYPES.INTEGER]: require(`./nodes/${NODE_TYPES.INTEGER}`),
+  [NODE_TYPES.OPERATOR]: require(`./nodes/${NODE_TYPES.OPERATOR}`)
 };
 
 const isRootNode = node => node.anns && node.imports && node.decls;
@@ -63,13 +65,17 @@ const isVariableDeclaration = node =>
 
 const isName = node => node.hasOwnProperty("name");
 
-const isExpression = node => node.hasOwnProperty("raw") && node.elems;
+const isExpression = node =>
+  (node.hasOwnProperty("raw") && node.elems) ||
+  (node.lhs && node.oper && node.rhs);
 
 const isString = node => node.hasOwnProperty("str");
 
 const isType = node => node.mods && node.ref;
 
 const isInteger = node => node.form == "INT";
+
+const isOperator = node => node.token;
 
 const assignType = node => {
   if (!node) {
@@ -106,6 +112,8 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.TYPE };
   } else if (isInteger(node)) {
     return { ...node, astType: NODE_TYPES.INTEGER };
+  } else if (isOperator(node)) {
+    return { ...node, astType: NODE_TYPES.OPERATOR };
   }
 
   throw new Error(

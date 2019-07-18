@@ -19,10 +19,17 @@ describe("variable-declaration", () => {
       expect(`class SomeClass {
   private val someReadOnlyProp = "Immutable"
 }`).toMatchFormat());
+
+    test("with accessor", () =>
+      expect(`class SomeClass {
+  val isEmpty: Boolean
+    get() = this.size == 0
+}`).toMatchFormat());
   });
 
   test("standard declarations", () =>
     expect(`val a = 1
 var b = 1
-val c: Int`).toMatchFormat());
+val c: Int
+var k: String = "plop"`).toMatchFormat());
 });
