@@ -14,7 +14,8 @@ const NODE_TYPES = {
   STRING: "string",
   TYPE: "type",
   INTEGER: "integer",
-  OPERATOR: "operator"
+  OPERATOR: "operator",
+  FUNCTION_CALL: "function-call"
 };
 
 const nodes = {
@@ -33,7 +34,8 @@ const nodes = {
   [NODE_TYPES.STRING]: require(`./nodes/${NODE_TYPES.STRING}`),
   [NODE_TYPES.TYPE]: require(`./nodes/${NODE_TYPES.TYPE}`),
   [NODE_TYPES.INTEGER]: require(`./nodes/${NODE_TYPES.INTEGER}`),
-  [NODE_TYPES.OPERATOR]: require(`./nodes/${NODE_TYPES.OPERATOR}`)
+  [NODE_TYPES.OPERATOR]: require(`./nodes/${NODE_TYPES.OPERATOR}`),
+  [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
 const isRootNode = node => node.anns && node.imports && node.decls;
@@ -77,6 +79,8 @@ const isInteger = node => node.form == "INT";
 
 const isOperator = node => node.token;
 
+const isFunctionCall = node => node.expr && node.typeArgs && node.args;
+
 const assignType = node => {
   if (!node) {
     throw new Error(`Undefined node encountered`);
@@ -114,6 +118,8 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.INTEGER };
   } else if (isOperator(node)) {
     return { ...node, astType: NODE_TYPES.OPERATOR };
+  } else if (isFunctionCall(node)) {
+    return { ...node, astType: NODE_TYPES.FUNCTION_CALL };
   }
 
   throw new Error(

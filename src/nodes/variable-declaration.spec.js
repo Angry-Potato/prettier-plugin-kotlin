@@ -25,6 +25,11 @@ describe("variable-declaration", () => {
   val isEmpty: Boolean
     get() = this.size == 0
 }`).toMatchFormat());
+
+    test.only("using constructor arg to init", () =>
+      expect(`class InitOrderDemoa(name: String) {
+  val firstProperty = "First property: $name".also(::println)
+}`).toMatchFormat());
   });
 
   test("standard declarations", () =>

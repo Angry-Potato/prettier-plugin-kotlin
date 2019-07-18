@@ -1,13 +1,15 @@
 const {
   doc: {
-    builders: { concat, join, group, indent, softline, line }
+    builders: { concat }
   }
 } = require("prettier");
 
 module.exports = (path, opts, print) => {
   const node = path.getValue();
 
+  const prefix = node.expr && node.expr.elems ? "" : "::";
+
   return node.expr.value
     ? node.expr.value.toString().trim()
-    : concat(['"', node.expr.elems[0].str.toString().trim(), '"']);
+    : concat([prefix, path.call(print, "expr")]);
 };

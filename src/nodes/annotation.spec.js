@@ -1,6 +1,7 @@
 describe("annotation", () => {
-  test("file annotation", () =>
+  test("file annotations", () =>
     expect(`@file:JvmName("Foo")
+@file:JvmName("Bar")
 
 package org.jetbrains.demo`).toMatchFormat());
 

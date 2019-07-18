@@ -16,7 +16,23 @@ function isEmpty(obj) {
 module.exports = (path, opts, print) => {
   const node = path.getValue();
   if (node.elems) {
-    return concat(path.map(print, "elems"));
+    if (node.elems.every(elem => elem.hasOwnProperty("str"))) {
+      return concat([
+        '"',
+        join(
+          "$",
+          path.map(print, "elems").map(elem => {
+            elem.parts.shift();
+            elem.parts.pop();
+
+            return elem;
+          })
+        ),
+        '"'
+      ]);
+    } else {
+      return concat(path.map(print, "elems"));
+    }
   }
 
   const lhs = isEmpty(node.lhs) ? "this" : path.call(print, "lhs");

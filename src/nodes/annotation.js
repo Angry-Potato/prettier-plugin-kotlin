@@ -1,6 +1,6 @@
 const {
   doc: {
-    builders: { concat, join, group, indent, softline, line }
+    builders: { concat, join, group, indent, softline, line, hardline }
   }
 } = require("prettier");
 

@@ -1,6 +1,6 @@
 const {
   doc: {
-    builders: { concat, literalline }
+    builders: { concat, literalline, join }
   }
 } = require("prettier");
 
@@ -9,7 +9,8 @@ module.exports = (path, opts, print) => {
   var children = [];
 
   if (rootNode.anns && rootNode.anns.length > 0) {
-    children.push(...path.map(print, "anns"));
+    const fileAnnotations = join("\n", path.map(print, "anns"));
+    children.push(fileAnnotations);
   }
 
   if (rootNode.pkg) {
