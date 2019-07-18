@@ -1,9 +1,10 @@
 const {
   doc: {
-    builders: { concat }
+    builders: {}
   }
 } = require("prettier");
 
 module.exports = (path, opts, print) => {
-  return concat(path.map(print, "elems"));
+  const node = path.getValue();
+  return node.value;
 };

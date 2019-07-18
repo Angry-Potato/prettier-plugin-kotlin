@@ -20,4 +20,8 @@ describe("variable-declaration", () => {
   private val someReadOnlyProp = "Immutable"
 }`).toMatchFormat());
   });
+
+  test("standard declarations", () =>
+    expect(`val a = 1
+var b = 1`).toMatchFormat());
 });

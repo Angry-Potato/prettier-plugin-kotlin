@@ -23,6 +23,7 @@ module.exports = (path, opts, print) => {
     varType,
     ...path.map(print, "vars"),
     " = ",
-    path.call(print, "expr")
+    path.call(print, "expr"),
+    hardline
   ]);
 };
