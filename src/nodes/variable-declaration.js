@@ -18,12 +18,9 @@ module.exports = (path, opts, print) => {
       ? concat([...path.map(print, "mods"), " "])
       : "";
 
-  return concat([
-    prefix,
-    varType,
-    ...path.map(print, "vars"),
-    " = ",
-    path.call(print, "expr"),
-    hardline
-  ]);
+  const expr = node.expr
+    ? concat([" = ", path.call(print, "expr"), hardline])
+    : "";
+
+  return concat([prefix, varType, ...path.map(print, "vars"), expr]);
 };

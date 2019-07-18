@@ -23,5 +23,6 @@ describe("variable-declaration", () => {
 
   test("standard declarations", () =>
     expect(`val a = 1
-var b = 1`).toMatchFormat());
+var b = 1
+val c: Int`).toMatchFormat());
 });

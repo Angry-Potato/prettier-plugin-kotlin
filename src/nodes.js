@@ -59,8 +59,7 @@ const isVariableDeclaration = node =>
   node.mods &&
   node.typeParams &&
   node.vars &&
-  node.typeConstraints &&
-  node.expr;
+  node.typeConstraints;
 
 const isName = node => node.hasOwnProperty("name");
 
