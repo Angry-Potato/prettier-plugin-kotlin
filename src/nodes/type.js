@@ -4,7 +4,10 @@ const {
   }
 } = require("prettier");
 
-module.exports = (path, opts, print) => {
-  const node = path.getValue();
-  return node.ref.pieces[0].name;
+module.exports = {
+  canPrint: node => node.mods && node.ref,
+  print: (path, opts, print) => {
+    const node = path.getValue();
+    return node.ref.pieces[0].name;
+  }
 };
