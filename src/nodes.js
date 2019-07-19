@@ -38,8 +38,6 @@ const nodes = {
   [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
-const isPrimaryConstructor = node => node.mods && node.params;
-
 const isParameter = node => node.mods && node.name && node.type;
 
 const isModifier = node => node.keyword || node.anns;
@@ -85,7 +83,7 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.IMPORT_STATEMENT };
   } else if (nodes[NODE_TYPES.CLASS_DECLARATION].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.CLASS_DECLARATION };
-  } else if (isPrimaryConstructor(node)) {
+  } else if (nodes[NODE_TYPES.PRIMARY_CONSTRUCTOR].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.PRIMARY_CONSTRUCTOR };
   } else if (isParameter(node)) {
     return { ...node, astType: NODE_TYPES.PARAMETER };
