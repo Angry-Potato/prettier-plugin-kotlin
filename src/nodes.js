@@ -38,8 +38,6 @@ const nodes = {
   [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
-const isOperator = node => node.token;
-
 const isFunctionCall = node => node.expr && node.typeArgs && node.args;
 
 const assignType = node => {
@@ -77,7 +75,7 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.TYPE };
   } else if (nodes[NODE_TYPES.INTEGER].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.INTEGER };
-  } else if (isOperator(node)) {
+  } else if (nodes[NODE_TYPES.OPERATOR].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.OPERATOR };
   } else if (isFunctionCall(node)) {
     return { ...node, astType: NODE_TYPES.FUNCTION_CALL };
