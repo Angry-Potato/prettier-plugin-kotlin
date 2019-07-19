@@ -1,5 +1,5 @@
 const NODE_TYPES = {
-  ROOT_NODE: "root-node",
+  FILE: "file",
   PACKAGE_DECLARATION: "package-declaration",
   IMPORT_STATEMENT: "import-statement",
   CLASS_DECLARATION: "class-declaration",
@@ -19,7 +19,7 @@ const NODE_TYPES = {
 };
 
 const nodes = {
-  [NODE_TYPES.ROOT_NODE]: require(`./nodes/${NODE_TYPES.ROOT_NODE}`),
+  [NODE_TYPES.FILE]: require(`./nodes/${NODE_TYPES.FILE}`),
   [NODE_TYPES.PACKAGE_DECLARATION]: require(`./nodes/${NODE_TYPES.PACKAGE_DECLARATION}`),
   [NODE_TYPES.IMPORT_STATEMENT]: require(`./nodes/${NODE_TYPES.IMPORT_STATEMENT}`),
   [NODE_TYPES.CLASS_DECLARATION]: require(`./nodes/${NODE_TYPES.CLASS_DECLARATION}`),
@@ -38,7 +38,7 @@ const nodes = {
   [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
-const isRootNode = node => node.anns && node.imports && node.decls;
+const isFile = node => node.anns && node.imports && node.decls;
 
 const isPkgDeclaration = node => node.mods && node.names;
 
@@ -86,8 +86,8 @@ const assignType = node => {
     throw new Error(`Undefined node encountered`);
   }
 
-  if (isRootNode(node)) {
-    return { ...node, astType: NODE_TYPES.ROOT_NODE };
+  if (isFile(node)) {
+    return { ...node, astType: NODE_TYPES.FILE };
   } else if (isPkgDeclaration(node)) {
     return { ...node, astType: NODE_TYPES.PACKAGE_DECLARATION };
   } else if (isImportStatement(node)) {

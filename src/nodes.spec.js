@@ -20,7 +20,7 @@ describe("assignType", () => {
       ]
     };
     someNode = nodes.assignType(someNode);
-    expect(someNode.astType).toBe(nodes.NODE_TYPES.ROOT_NODE);
+    expect(someNode.astType).toBe(nodes.NODE_TYPES.FILE);
   });
 
   test("should assign package declaration node astType", () => {

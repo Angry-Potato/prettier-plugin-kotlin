@@ -1,4 +1,4 @@
-describe("root-node", () => {
+describe("file", () => {
   test("unchanged", () =>
     expect(
       `package com.github.angrypotato.kotato
