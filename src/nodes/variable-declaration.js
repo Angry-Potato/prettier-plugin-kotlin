@@ -4,37 +4,46 @@ const {
   }
 } = require("prettier");
 
-module.exports = (path, opts, print) => {
-  const node = path.getValue();
+module.exports = {
+  canPrint: node =>
+    node.hasOwnProperty("readOnly") &&
+    node.hasOwnProperty("delegated") &&
+    node.mods &&
+    node.typeParams &&
+    node.vars &&
+    node.typeConstraints,
+  print: (path, opts, print) => {
+    const node = path.getValue();
 
-  const varType = node.hasOwnProperty("readOnly")
-    ? node.readOnly
-      ? "val "
-      : "var "
-    : "";
-
-  const prefix =
-    node.mods && node.mods.length > 0
-      ? concat([...path.map(print, "mods"), " "])
+    const varType = node.hasOwnProperty("readOnly")
+      ? node.readOnly
+        ? "val "
+        : "var "
       : "";
 
-  const expr = node.expr ? concat([" = ", path.call(print, "expr")]) : "";
-  const accessors =
-    node.accessors && node.accessors.first
-      ? concat([
-          "get() = ",
-          ...path.map(print, "accessors", "first", "mods"),
-          path.call(print, "accessors", "first", "body", "expr"),
-          hardline
-        ])
-      : "";
+    const prefix =
+      node.mods && node.mods.length > 0
+        ? concat([...path.map(print, "mods"), " "])
+        : "";
 
-  return concat([
-    prefix,
-    varType,
-    ...path.map(print, "vars"),
-    expr,
-    accessors == "" ? hardline : indent(indent(hardline)),
-    accessors
-  ]);
+    const expr = node.expr ? concat([" = ", path.call(print, "expr")]) : "";
+    const accessors =
+      node.accessors && node.accessors.first
+        ? concat([
+            "get() = ",
+            ...path.map(print, "accessors", "first", "mods"),
+            path.call(print, "accessors", "first", "body", "expr"),
+            hardline
+          ])
+        : "";
+
+    return concat([
+      prefix,
+      varType,
+      ...path.map(print, "vars"),
+      expr,
+      accessors == "" ? hardline : indent(indent(hardline)),
+      accessors
+    ]);
+  }
 };
