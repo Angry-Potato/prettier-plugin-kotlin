@@ -38,8 +38,6 @@ const nodes = {
   [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
-const isParameter = node => node.mods && node.name && node.type;
-
 const isModifier = node => node.keyword || node.anns;
 
 const isAnnotation = node => node.names && node.typeArgs && node.args;
@@ -85,7 +83,7 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.CLASS_DECLARATION };
   } else if (nodes[NODE_TYPES.PRIMARY_CONSTRUCTOR].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.PRIMARY_CONSTRUCTOR };
-  } else if (isParameter(node)) {
+  } else if (nodes[NODE_TYPES.PARAMETER].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.PARAMETER };
   } else if (isModifier(node)) {
     return { ...node, astType: NODE_TYPES.MODIFIER };
