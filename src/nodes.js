@@ -38,8 +38,6 @@ const nodes = {
   [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
-const isArg = node => node.hasOwnProperty("asterisk") && node.expr;
-
 const isVariableDeclaration = node =>
   node.hasOwnProperty("readOnly") &&
   node.hasOwnProperty("delegated") &&
@@ -85,7 +83,7 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.MODIFIER };
   } else if (nodes[NODE_TYPES.ANNOTATION].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.ANNOTATION };
-  } else if (isArg(node)) {
+  } else if (nodes[NODE_TYPES.ARG].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.ARG };
   } else if (isVariableDeclaration(node)) {
     return { ...node, astType: NODE_TYPES.VARIABLE_DECLARATION };

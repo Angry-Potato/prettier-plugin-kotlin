@@ -4,12 +4,15 @@ const {
   }
 } = require("prettier");
 
-module.exports = (path, opts, print) => {
-  const node = path.getValue();
+module.exports = {
+  canPrint: node => node.hasOwnProperty("asterisk") && node.expr,
+  print: (path, opts, print) => {
+    const node = path.getValue();
 
-  const prefix = node.expr && node.expr.elems ? "" : "::";
+    const prefix = node.expr && node.expr.elems ? "" : "::";
 
-  return node.expr.value
-    ? node.expr.value.toString().trim()
-    : concat([prefix, path.call(print, "expr")]);
+    return node.expr.value
+      ? node.expr.value.toString().trim()
+      : concat([prefix, path.call(print, "expr")]);
+  }
 };
