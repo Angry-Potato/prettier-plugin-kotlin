@@ -38,8 +38,6 @@ const nodes = {
   [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
-const isModifier = node => node.keyword || node.anns;
-
 const isAnnotation = node => node.names && node.typeArgs && node.args;
 
 const isArg = node => node.hasOwnProperty("asterisk") && node.expr;
@@ -85,7 +83,7 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.PRIMARY_CONSTRUCTOR };
   } else if (nodes[NODE_TYPES.PARAMETER].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.PARAMETER };
-  } else if (isModifier(node)) {
+  } else if (nodes[NODE_TYPES.MODIFIER].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.MODIFIER };
   } else if (isAnnotation(node)) {
     return { ...node, astType: NODE_TYPES.ANNOTATION };
