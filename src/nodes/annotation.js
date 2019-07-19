@@ -4,26 +4,29 @@ const {
   }
 } = require("prettier");
 
-module.exports = (path, opts, print) => {
-  const node = path.getValue();
+module.exports = {
+  canPrint: node => node.names && node.typeArgs && node.args,
+  print: (path, opts, print) => {
+    const node = path.getValue();
 
-  const annotation = concat([join(".", node.names)]);
-  const args =
-    node.args && node.args.length > 0
-      ? group(
-          concat([
-            "(",
-            indent(
-              concat([
-                softline,
-                join(concat([",", line]), path.map(print, "args"))
-              ])
-            ),
-            softline,
-            ")"
-          ])
-        )
-      : "";
+    const annotation = concat([join(".", node.names)]);
+    const args =
+      node.args && node.args.length > 0
+        ? group(
+            concat([
+              "(",
+              indent(
+                concat([
+                  softline,
+                  join(concat([",", line]), path.map(print, "args"))
+                ])
+              ),
+              softline,
+              ")"
+            ])
+          )
+        : "";
 
-  return concat([annotation, args]);
+    return concat([annotation, args]);
+  }
 };
