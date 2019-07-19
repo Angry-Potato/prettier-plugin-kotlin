@@ -38,9 +38,6 @@ const nodes = {
   [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
-const isImportStatement = node =>
-  node && node.hasOwnProperty("wildcard") && node.names;
-
 const isClassDeclaration = node => node.form == "CLASS";
 
 const isPrimaryConstructor = node => node.mods && node.params;
@@ -86,7 +83,7 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.FILE };
   } else if (nodes[NODE_TYPES.PACKAGE_DECLARATION].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.PACKAGE_DECLARATION };
-  } else if (isImportStatement(node)) {
+  } else if (nodes[NODE_TYPES.IMPORT_STATEMENT].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.IMPORT_STATEMENT };
   } else if (isClassDeclaration(node)) {
     return { ...node, astType: NODE_TYPES.CLASS_DECLARATION };
