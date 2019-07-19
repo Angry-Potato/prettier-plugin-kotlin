@@ -43,40 +43,10 @@ const assignType = node => {
     throw new Error(`Undefined node encountered`);
   }
 
-  if (nodes[NODE_TYPES.FILE].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.FILE };
-  } else if (nodes[NODE_TYPES.PACKAGE_DECLARATION].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.PACKAGE_DECLARATION };
-  } else if (nodes[NODE_TYPES.IMPORT_STATEMENT].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.IMPORT_STATEMENT };
-  } else if (nodes[NODE_TYPES.CLASS_DECLARATION].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.CLASS_DECLARATION };
-  } else if (nodes[NODE_TYPES.PRIMARY_CONSTRUCTOR].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.PRIMARY_CONSTRUCTOR };
-  } else if (nodes[NODE_TYPES.PARAMETER].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.PARAMETER };
-  } else if (nodes[NODE_TYPES.MODIFIER].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.MODIFIER };
-  } else if (nodes[NODE_TYPES.ANNOTATION].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.ANNOTATION };
-  } else if (nodes[NODE_TYPES.ARG].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.ARG };
-  } else if (nodes[NODE_TYPES.VARIABLE_DECLARATION].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.VARIABLE_DECLARATION };
-  } else if (nodes[NODE_TYPES.NAME].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.NAME };
-  } else if (nodes[NODE_TYPES.EXPRESSION].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.EXPRESSION };
-  } else if (nodes[NODE_TYPES.STRING].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.STRING };
-  } else if (nodes[NODE_TYPES.TYPE].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.TYPE };
-  } else if (nodes[NODE_TYPES.INTEGER].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.INTEGER };
-  } else if (nodes[NODE_TYPES.OPERATOR].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.OPERATOR };
-  } else if (nodes[NODE_TYPES.FUNCTION_CALL].canPrint(node)) {
-    return { ...node, astType: NODE_TYPES.FUNCTION_CALL };
+  for (var nodeType in nodes) {
+    if (nodes.hasOwnProperty(nodeType) && nodes[nodeType].canPrint(node)) {
+      return { ...node, astType: nodeType };
+    }
   }
 
   throw new Error(
