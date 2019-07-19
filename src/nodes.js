@@ -38,8 +38,6 @@ const nodes = {
   [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
-const isFunctionCall = node => node.expr && node.typeArgs && node.args;
-
 const assignType = node => {
   if (!node) {
     throw new Error(`Undefined node encountered`);
@@ -77,7 +75,7 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.INTEGER };
   } else if (nodes[NODE_TYPES.OPERATOR].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.OPERATOR };
-  } else if (isFunctionCall(node)) {
+  } else if (nodes[NODE_TYPES.FUNCTION_CALL].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.FUNCTION_CALL };
   }
 
