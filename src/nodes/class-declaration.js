@@ -16,26 +16,29 @@ function rejectAndConcat(elems) {
   return concat(actualElements);
 }
 
-module.exports = (path, opts, print) => {
-  const node = path.getValue();
+module.exports = {
+  canPrint: node => node.form == "CLASS",
+  print: (path, opts, print) => {
+    const node = path.getValue();
 
-  const prefix =
-    node.mods && node.mods.length > 0
-      ? concat([...path.map(print, "mods"), " "])
-      : "";
+    const prefix =
+      node.mods && node.mods.length > 0
+        ? concat([...path.map(print, "mods"), " "])
+        : "";
 
-  const hasBody = node.members && node.members.length > 0;
-  const openingBrace = hasBody ? indent(concat([" {", hardline])) : "";
-  const closingBrace = hasBody ? "}" : "";
-  const members = hasBody ? concat(path.map(print, "members")) : "";
+    const hasBody = node.members && node.members.length > 0;
+    const openingBrace = hasBody ? indent(concat([" {", hardline])) : "";
+    const closingBrace = hasBody ? "}" : "";
+    const members = hasBody ? concat(path.map(print, "members")) : "";
 
-  return rejectAndConcat([
-    prefix,
-    "class ",
-    node.name,
-    path.call(print, "primaryConstructor"),
-    openingBrace,
-    members,
-    closingBrace
-  ]);
+    return rejectAndConcat([
+      prefix,
+      "class ",
+      node.name,
+      path.call(print, "primaryConstructor"),
+      openingBrace,
+      members,
+      closingBrace
+    ]);
+  }
 };
