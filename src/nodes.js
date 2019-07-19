@@ -38,8 +38,6 @@ const nodes = {
   [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
-const isFile = node => node.anns && node.imports && node.decls;
-
 const isPkgDeclaration = node => node.mods && node.names;
 
 const isImportStatement = node =>
@@ -86,7 +84,7 @@ const assignType = node => {
     throw new Error(`Undefined node encountered`);
   }
 
-  if (isFile(node)) {
+  if (nodes[NODE_TYPES.FILE].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.FILE };
   } else if (isPkgDeclaration(node)) {
     return { ...node, astType: NODE_TYPES.PACKAGE_DECLARATION };
