@@ -38,8 +38,6 @@ const nodes = {
   [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
-const isPkgDeclaration = node => node.mods && node.names;
-
 const isImportStatement = node =>
   node && node.hasOwnProperty("wildcard") && node.names;
 
@@ -86,7 +84,7 @@ const assignType = node => {
 
   if (nodes[NODE_TYPES.FILE].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.FILE };
-  } else if (isPkgDeclaration(node)) {
+  } else if (nodes[NODE_TYPES.PACKAGE_DECLARATION].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.PACKAGE_DECLARATION };
   } else if (isImportStatement(node)) {
     return { ...node, astType: NODE_TYPES.IMPORT_STATEMENT };

@@ -4,8 +4,11 @@ const {
   }
 } = require("prettier");
 
-module.exports = (path, opts, print) => {
-  const { names: names } = path.getValue();
+module.exports = {
+  canPrint: node => node.mods && node.names,
+  print: (path, opts, print) => {
+    const { names: names } = path.getValue();
 
-  return concat(["package ", names.join("."), literalline]);
+    return concat(["package ", names.join("."), literalline]);
+  }
 };
