@@ -1,11 +1,25 @@
-const {
-  doc: {
-    builders: {}
+const djv = require("djv");
+const env = new djv();
+const jsonSchema = {
+  common: {
+    properties: {
+      form: {
+        const: "INT"
+      },
+      value: {
+        type: "string"
+      }
+    },
+    required: ["form", "value"],
+    additionalProperties: false
   }
-} = require("prettier");
+};
+
+env.addSchema("test", jsonSchema);
 
 module.exports = {
-  canPrint: node => node.form == "INT",
+  name: __filename,
+  canPrint: node => env.validate("test#/common", node) == undefined,
   print: (path, opts, print) => {
     const node = path.getValue();
     return node.value;

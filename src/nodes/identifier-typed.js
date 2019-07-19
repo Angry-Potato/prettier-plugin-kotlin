@@ -1,28 +1,30 @@
+const {
+  doc: {
+    builders: { concat }
+  }
+} = require("prettier");
 const djv = require("djv");
 const env = new djv();
 const jsonSchema = {
   common: {
     properties: {
-      mods: {
-        type: "array",
-        items: {
-          type: "object"
-        }
+      name: {
+        type: "string"
       },
-      ref: {
+      type: {
         type: "object",
         properties: {
-          pieces: {
-            type: "array",
-            items: {
-              type: "object"
-            }
+          mods: {
+            type: "array"
+          },
+          ref: {
+            type: "object"
           }
         },
-        required: ["pieces"]
+        required: ["mods", "ref"]
       }
     },
-    required: ["mods", "ref"],
+    required: ["name", "type"],
     additionalProperties: false
   }
 };
@@ -34,6 +36,6 @@ module.exports = {
   canPrint: node => env.validate("test#/common", node) == undefined,
   print: (path, opts, print) => {
     const node = path.getValue();
-    return node.ref.pieces[0].name;
+    return concat([node.name, ": ", path.call(print, "type")]);
   }
 };

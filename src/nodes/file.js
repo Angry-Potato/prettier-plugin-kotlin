@@ -3,9 +3,58 @@ const {
     builders: { concat, literalline, join }
   }
 } = require("prettier");
+const djv = require("djv");
+const env = new djv();
+const jsonSchema = {
+  common: {
+    properties: {
+      pkg: {
+        type: "object",
+        properties: {
+          mods: {
+            type: "array",
+            items: {
+              type: "object"
+            }
+          },
+          names: {
+            type: "array",
+            items: {
+              type: "string"
+            }
+          }
+        },
+        required: ["mods", "names"]
+      },
+      anns: {
+        type: "array",
+        items: {
+          type: "object"
+        }
+      },
+      imports: {
+        type: "array",
+        items: {
+          type: "object"
+        }
+      },
+      decls: {
+        type: "array",
+        items: {
+          type: "object"
+        }
+      }
+    },
+    required: ["anns", "imports", "decls"],
+    additionalProperties: false
+  }
+};
+
+env.addSchema("test", jsonSchema);
 
 module.exports = {
-  canPrint: node => node.anns && node.imports && node.decls,
+  name: __filename,
+  canPrint: node => env.validate("test#/common", node) == undefined,
   print: (path, opts, print) => {
     const rootNode = path.getValue();
     var children = [];

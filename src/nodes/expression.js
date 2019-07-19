@@ -3,6 +3,36 @@ const {
     builders: { concat, join }
   }
 } = require("prettier");
+const djv = require("djv");
+const env = new djv();
+const jsonSchema = {
+  naked: {
+    properties: {
+      lhs: {
+        type: "object"
+      },
+      oper: {
+        type: "object"
+      },
+      rhs: {
+        type: "object"
+      }
+    },
+    required: ["lhs", "oper", "rhs"],
+    additionalProperties: false
+  },
+  wrapped: {
+    properties: {
+      expr: {
+        type: "object"
+      }
+    },
+    required: ["expr"],
+    additionalProperties: false
+  }
+};
+
+env.addSchema("test", jsonSchema);
 
 function isEmpty(obj) {
   for (var prop in obj) {
@@ -14,31 +44,15 @@ function isEmpty(obj) {
   return JSON.stringify(obj) === JSON.stringify({});
 }
 module.exports = {
+  name: __filename,
   canPrint: node =>
-    (node.hasOwnProperty("raw") && node.elems) ||
-    (node.lhs && node.oper && node.rhs),
+    env.validate("test#/naked", node) == undefined ||
+    env.validate("test#/wrapped", node) == undefined,
   print: (path, opts, print) => {
     const node = path.getValue();
-    if (node.elems) {
-      if (node.elems.every(elem => elem.hasOwnProperty("str"))) {
-        return concat([
-          '"',
-          join(
-            "$",
-            path.map(print, "elems").map(elem => {
-              elem.parts.shift();
-              elem.parts.pop();
-
-              return elem;
-            })
-          ),
-          '"'
-        ]);
-      } else {
-        return concat(path.map(print, "elems"));
-      }
+    if (node.expr) {
+      return path.call(print, "expr");
     }
-
     const lhs = isEmpty(node.lhs) ? "this" : path.call(print, "lhs");
     return concat([lhs, path.call(print, "oper"), path.call(print, "rhs")]);
   }

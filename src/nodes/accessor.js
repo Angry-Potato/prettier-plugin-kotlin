@@ -1,6 +1,6 @@
 const {
   doc: {
-    builders: { concat, literalline }
+    builders: { concat }
   }
 } = require("prettier");
 const djv = require("djv");
@@ -14,14 +14,11 @@ const jsonSchema = {
           type: "object"
         }
       },
-      names: {
-        type: "array",
-        items: {
-          type: "string"
-        }
+      body: {
+        type: "object"
       }
     },
-    required: ["mods", "names"],
+    required: ["mods", "body"],
     additionalProperties: false
   }
 };
@@ -32,8 +29,11 @@ module.exports = {
   name: __filename,
   canPrint: node => env.validate("test#/common", node) == undefined,
   print: (path, opts, print) => {
-    const { names: names } = path.getValue();
-
-    return concat(["package ", names.join("."), literalline]);
+    const mods = path.map(print, "mods");
+    return concat([
+      ...mods,
+      mods.length == 0 ? "" : " ",
+      path.call(print, "body")
+    ]);
   }
 };

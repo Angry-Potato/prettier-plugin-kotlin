@@ -3,6 +3,7 @@ const {
     builders: { concat, hardline, indent }
   }
 } = require("prettier");
+const djv = require("djv");
 
 function reject(elems) {
   return elems.filter(item => {
@@ -15,9 +16,23 @@ function rejectAndConcat(elems) {
 
   return concat(actualElements);
 }
+const env = new djv();
+const jsonSchema = {
+  common: {
+    properties: {
+      form: {
+        const: "CLASS"
+      }
+    },
+    required: ["form"]
+  }
+};
+
+env.addSchema("test", jsonSchema);
 
 module.exports = {
-  canPrint: node => node.form == "CLASS",
+  name: __filename,
+  canPrint: node => env.validate("test#/common", node) == undefined,
   print: (path, opts, print) => {
     const node = path.getValue();
 

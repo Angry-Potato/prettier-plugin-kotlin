@@ -4,8 +4,25 @@ const {
   }
 } = require("prettier");
 
+const djv = require("djv");
+const env = new djv();
+const jsonSchema = {
+  common: {
+    properties: {
+      token: {
+        type: "string"
+      }
+    },
+    required: ["token"],
+    additionalProperties: false
+  }
+};
+
+env.addSchema("test", jsonSchema);
+
 module.exports = {
-  canPrint: node => node.token,
+  name: __filename,
+  canPrint: node => env.validate("test#/common", node) == undefined,
   print: (path, opts, print) => {
     const node = path.getValue();
     switch (node.token.toLowerCase()) {

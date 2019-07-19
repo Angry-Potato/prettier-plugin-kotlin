@@ -1,10 +1,10 @@
 const nodes = require("./nodes");
 
-describe("determinePrintFunction", () => {
+describe("determineNodePrinter", () => {
   test("should throw on unknown node astType", () => {
     var someNode = { dude: { what: ["bleh"] } };
     expect(() => {
-      nodes.determinePrintFunction(someNode);
+      nodes.determineNodePrinter(someNode);
     }).toThrow();
   });
 });

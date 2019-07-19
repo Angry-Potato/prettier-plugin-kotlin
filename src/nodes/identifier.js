@@ -3,11 +3,11 @@ const env = new djv();
 const jsonSchema = {
   common: {
     properties: {
-      keyword: {
+      name: {
         type: "string"
       }
     },
-    required: ["keyword"],
+    required: ["name"],
     additionalProperties: false
   }
 };
@@ -19,9 +19,6 @@ module.exports = {
   canPrint: node => env.validate("test#/common", node) == undefined,
   print: (path, opts, print) => {
     const node = path.getValue();
-    return node.keyword
-      .toString()
-      .toLowerCase()
-      .trim();
+    return node.name.trim();
   }
 };

@@ -1,6 +1,6 @@
 const {
   doc: {
-    builders: { concat, hardline }
+    builders: { concat, hardline, indent }
   }
 } = require("prettier");
 const djv = require("djv");
@@ -37,6 +37,9 @@ const jsonSchema = {
       },
       delegated: {
         type: "boolean"
+      },
+      accessors: {
+        type: "object"
       }
     },
     required: [
@@ -45,7 +48,8 @@ const jsonSchema = {
       "typeParams",
       "typeConstraints",
       "vars",
-      "delegated"
+      "delegated",
+      "accessors"
     ],
     additionalProperties: false
   }
@@ -67,6 +71,8 @@ module.exports = {
       node.readOnly ? "val" : "var",
       " ",
       ...path.map(print, "vars"),
+      indent(indent(hardline)),
+      path.call(print, "accessors"),
       hardline
     ]);
   }

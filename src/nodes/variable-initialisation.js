@@ -37,6 +37,9 @@ const jsonSchema = {
       },
       delegated: {
         type: "boolean"
+      },
+      expr: {
+        type: "object"
       }
     },
     required: [
@@ -45,7 +48,8 @@ const jsonSchema = {
       "typeParams",
       "typeConstraints",
       "vars",
-      "delegated"
+      "delegated",
+      "expr"
     ],
     additionalProperties: false
   }
@@ -67,6 +71,8 @@ module.exports = {
       node.readOnly ? "val" : "var",
       " ",
       ...path.map(print, "vars"),
+      " = ",
+      path.call(print, "expr"),
       hardline
     ]);
   }

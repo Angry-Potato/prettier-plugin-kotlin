@@ -1,13 +1,18 @@
+const {
+  doc: {
+    builders: { concat }
+  }
+} = require("prettier");
 const djv = require("djv");
 const env = new djv();
 const jsonSchema = {
   common: {
     properties: {
-      keyword: {
-        type: "string"
+      first: {
+        type: "object"
       }
     },
-    required: ["keyword"],
+    required: ["first"],
     additionalProperties: false
   }
 };
@@ -18,10 +23,6 @@ module.exports = {
   name: __filename,
   canPrint: node => env.validate("test#/common", node) == undefined,
   print: (path, opts, print) => {
-    const node = path.getValue();
-    return node.keyword
-      .toString()
-      .toLowerCase()
-      .trim();
+    return concat(["get() = ", path.call(print, "first")]);
   }
 };

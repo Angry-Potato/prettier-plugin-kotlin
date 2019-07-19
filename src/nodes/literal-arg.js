@@ -3,26 +3,23 @@ const env = new djv();
 const jsonSchema = {
   common: {
     properties: {
-      mods: {
-        type: "array",
-        items: {
-          type: "object"
-        }
-      },
-      ref: {
+      expr: {
         type: "object",
         properties: {
-          pieces: {
-            type: "array",
-            items: {
-              type: "object"
-            }
+          value: {
+            type: "string"
+          },
+          form: {
+            type: "string"
           }
         },
-        required: ["pieces"]
+        required: ["value", "form"]
+      },
+      asterisk: {
+        type: "boolean"
       }
     },
-    required: ["mods", "ref"],
+    required: ["asterisk", "expr"],
     additionalProperties: false
   }
 };
@@ -33,7 +30,6 @@ module.exports = {
   name: __filename,
   canPrint: node => env.validate("test#/common", node) == undefined,
   print: (path, opts, print) => {
-    const node = path.getValue();
-    return node.ref.pieces[0].name;
+    return path.call(print, "expr");
   }
 };
