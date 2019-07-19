@@ -4,8 +4,11 @@ const {
   }
 } = require("prettier");
 
-module.exports = (path, opts, print) => {
-  const node = path.getValue();
+module.exports = {
+  canPrint: node => node.hasOwnProperty("str"),
+  print: (path, opts, print) => {
+    const node = path.getValue();
 
-  return concat(['"', node.str, '"']);
+    return concat(['"', node.str, '"']);
+  }
 };

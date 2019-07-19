@@ -38,8 +38,6 @@ const nodes = {
   [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
-const isString = node => node.hasOwnProperty("str");
-
 const isType = node => node.mods && node.ref;
 
 const isInteger = node => node.form == "INT";
@@ -77,7 +75,7 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.NAME };
   } else if (nodes[NODE_TYPES.EXPRESSION].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.EXPRESSION };
-  } else if (isString(node)) {
+  } else if (nodes[NODE_TYPES.STRING].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.STRING };
   } else if (isType(node)) {
     return { ...node, astType: NODE_TYPES.TYPE };
