@@ -1,4 +1,4 @@
-const { assignType, nodes } = require("./nodes");
+const { determinePrintFunction, nodes } = require("./nodes");
 
 module.exports = (path, opts, print) => {
   const node = path.getValue();
@@ -7,9 +7,5 @@ module.exports = (path, opts, print) => {
     return "";
   }
 
-  const typedNode = assignType(node);
-
-  if (typedNode.astType) {
-    return nodes[typedNode.astType].print(path, opts, print);
-  }
+  return determinePrintFunction(node)(path, opts, print);
 };

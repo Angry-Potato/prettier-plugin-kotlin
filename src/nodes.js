@@ -38,14 +38,14 @@ const nodes = {
   [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
-const assignType = node => {
+const determinePrintFunction = node => {
   if (!node) {
     throw new Error(`Undefined node encountered`);
   }
 
   for (var nodeType in nodes) {
     if (nodes.hasOwnProperty(nodeType) && nodes[nodeType].canPrint(node)) {
-      return { ...node, astType: nodeType };
+      return nodes[nodeType].print;
     }
   }
 
@@ -56,6 +56,6 @@ const assignType = node => {
 
 module.exports = {
   NODE_TYPES,
-  assignType,
+  determinePrintFunction,
   nodes
 };
