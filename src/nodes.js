@@ -38,10 +38,6 @@ const nodes = {
   [NODE_TYPES.FUNCTION_CALL]: require(`./nodes/${NODE_TYPES.FUNCTION_CALL}`)
 };
 
-const isExpression = node =>
-  (node.hasOwnProperty("raw") && node.elems) ||
-  (node.lhs && node.oper && node.rhs);
-
 const isString = node => node.hasOwnProperty("str");
 
 const isType = node => node.mods && node.ref;
@@ -79,7 +75,7 @@ const assignType = node => {
     return { ...node, astType: NODE_TYPES.VARIABLE_DECLARATION };
   } else if (nodes[NODE_TYPES.NAME].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.NAME };
-  } else if (isExpression(node)) {
+  } else if (nodes[NODE_TYPES.EXPRESSION].canPrint(node)) {
     return { ...node, astType: NODE_TYPES.EXPRESSION };
   } else if (isString(node)) {
     return { ...node, astType: NODE_TYPES.STRING };
