@@ -1,6 +1,6 @@
 const {
   doc: {
-    builders: { concat, hardline, indent }
+    builders: { concat, hardline, indent, join }
   }
 } = require("prettier");
 const djv = require("djv");
@@ -44,7 +44,9 @@ module.exports = {
     const hasBody = node.members && node.members.length > 0;
     const openingBrace = hasBody ? indent(concat([" {", hardline])) : "";
     const closingBrace = hasBody ? "}" : "";
-    const members = hasBody ? concat(path.map(print, "members")) : "";
+    const members = hasBody
+      ? join(indent(hardline), path.map(print, "members"))
+      : "";
 
     return rejectAndConcat([
       prefix,

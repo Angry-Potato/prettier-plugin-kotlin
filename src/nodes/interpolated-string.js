@@ -14,13 +14,13 @@ const jsonSchema = {
       elems: {
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            str: {
-              type: "string"
-            }
-          },
-          required: ["str"]
+          type: "object"
+          //   properties: {
+          //     str: {
+          //       type: "string"
+          //     }
+          //   },
+          //   required: ["str"]
         }
       }
     },
@@ -31,6 +31,19 @@ const jsonSchema = {
 
 env.addSchema("test", jsonSchema);
 
+const trimQuotes = node => {
+  if (node.parts) {
+    if (node.parts[0] == '"') {
+      node.parts.shift();
+    }
+    if (node.parts[node.parts.length - 1] == '"') {
+      node.parts.pop();
+    }
+  }
+
+  return node;
+};
+
 module.exports = {
   name: __filename,
   canPrint: node => env.validate("test#/common", node) == undefined,
@@ -38,17 +51,13 @@ module.exports = {
     const node = path.getValue();
     const stringParts = path.map(print, "elems");
     if (node.elems.length > 1) {
+      const baseString = trimQuotes(stringParts.shift());
       return concat([
         '"',
-        join(
-          "$",
-          stringParts.map(elem => {
-            elem.parts.shift();
-            elem.parts.pop();
-
-            return elem;
-          })
-        ),
+        baseString,
+        ...stringParts.map(elem => {
+          return concat(["${", trimQuotes(elem), "}"]);
+        }),
         '"'
       ]);
     }

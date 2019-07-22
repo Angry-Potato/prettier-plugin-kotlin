@@ -43,6 +43,12 @@ const jsonSchema = {
         items: {
           type: "object"
         }
+      },
+      tokens: {
+        type: "array",
+        items: {
+          type: "object"
+        }
       }
     },
     required: ["anns", "imports", "decls"],
