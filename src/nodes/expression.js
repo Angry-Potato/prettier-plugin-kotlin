@@ -29,6 +29,30 @@ const jsonSchema = {
     },
     required: ["expr"],
     additionalProperties: false
+  },
+  wrapped2: {
+    properties: {
+      expr: {
+        type: "object",
+        properties: {
+          lhs: {
+            type: "object"
+          },
+          oper: {
+            type: "object"
+          },
+          rhs: {
+            type: "object"
+          }
+        },
+        required: ["lhs", "oper", "rhs"]
+      },
+      asterisk: {
+        type: "boolean"
+      }
+    },
+    required: ["expr", "asterisk"],
+    additionalProperties: false
   }
 };
 
@@ -47,7 +71,8 @@ module.exports = {
   name: __filename,
   canPrint: node =>
     env.validate("test#/naked", node) == undefined ||
-    env.validate("test#/wrapped", node) == undefined,
+    env.validate("test#/wrapped", node) == undefined ||
+    env.validate("test#/wrapped2", node) == undefined,
   print: (path, opts, print) => {
     const node = path.getValue();
     if (node.expr) {

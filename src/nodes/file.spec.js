@@ -59,4 +59,19 @@ import java.io.File
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder as gsonBuilder
 import com.google.gson.reflect.*`));
+
+  test("multiple classes per file", () =>
+    expect(`class Empty
+
+class InitOrderDemoa(name: String) {
+  val firstProperty = "First property: \${name}".also(::println)
+
+  init {
+    println("First initializer block that prints \${name}")
+  }
+}
+
+class ColorHelpFormatter {
+  private val tc = TermColors(TermColors.Level.ANSI16)
+}`).toMatchFormat());
 });

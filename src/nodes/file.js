@@ -86,7 +86,9 @@ module.exports = {
       if (rootNode.imports && rootNode.imports.length > 0) {
         children.push(literalline, literalline);
       }
-      children.push(...path.map(print, "decls"));
+      children.push(
+        join(concat([literalline, literalline]), path.map(print, "decls"))
+      );
     }
 
     return concat(children);
