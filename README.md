@@ -1,6 +1,13 @@
+![Prettier Banner](https://raw.githubusercontent.com/prettier/prettier-logo/master/images/prettier-banner-light.png)
+<p align="center">
+    :construction: Work in Progress! :construction:
+</p>
 <h1 align="center">Welcome to prettier-plugin-kotlin 👋</h1>
+
 <p>
-  <img src="https://img.shields.io/badge/version-1.0.1-1-blue.svg?cacheSeconds=2592000" />
+  <a href="https://github.com/Angry-Potato/prettier-plugin-kotlin#readme">
+    <img alt="npm" src="https://img.shields.io/npm/v/prettier-plugin-kotlin.svg" target="_blank" >
+  </a>
   <a href="https://github.com/Angry-Potato/prettier-plugin-kotlin#readme">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
   </a>
