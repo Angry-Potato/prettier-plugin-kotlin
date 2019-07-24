@@ -1,4 +1,9 @@
-![Prettier Banner](https://raw.githubusercontent.com/prettier/prettier-logo/master/images/prettier-banner-light.png)
+
+<p align="center">
+    <img width=210 alt="Prettier" src="https://cdn.rawgit.com/prettier/prettier-logo/master/images/prettier-icon-light.svg">
+    <img width=210 alt="Kotlin" src="https://upload.wikimedia.org/wikipedia/commons/7/74/Kotlin-logo.svg">
+</p>
+
 <p align="center">
     :construction: Work in Progress! :construction:
 </p>
@@ -21,7 +26,18 @@
 
 > prettier plugin for the Kotlin programming language.
 
-### 🏠 [Homepage](https://github.com/Angry-Potato/prettier-plugin-kotlin#readme)
+## How it works
+
+A Prettier plugin must first parse the source code of the target language
+into a traversable data structure (Usually an **A**bstract **S**yntax **T**ree)
+and then print out that data structure in a "pretty" style.
+
+Prettier-plugin-kotlin uses a [Kotlin-Parser](./kotato) implemented in Kotlin, heavily based on [Kastree](https://github.com/cretz/kastree).
+
+## Status
+
+- Parser alpha version done, it can parse most of Kotlin code. However, performance is an issue, and we still need to make some tweaks and improvements.
+- The printer is mostly done, it can output formatted code but needs to be improved on some cases.
 
 ## Install
 
@@ -52,6 +68,10 @@ npm run test
 ## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/Angry-Potato/prettier-plugin-kotlin/issues).
+
+## Credits
+
+Special thanks to [@cretz](https://github.com/cretz) for creating [Kastree](https://github.com/cretz/kastree).
 
 ## Show your support
 
