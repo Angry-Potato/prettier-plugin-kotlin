@@ -45,19 +45,54 @@ Prettier-plugin-kotlin uses a [Kotlin-Parser](./kotato) implemented in Kotlin, h
 npm install
 ```
 
-## VSCode
+## Getting started
 
-To use this plugin with the VSCode Prettier plugin, navigate to the VSCode Prettier plugin install directory (`$HOME/.vscode/extensions/esbenp.prettier-vscode-<VERSION>` on ubuntu), and install this package: `npm install --save prettier-plugin-kotlin`.
+Simply install `prettier` and `prettier-plugin-kotlin` as your project’s npm dependencies:
 
-The format on save functionality doesn't appear to work when plugins are added to extensions in this fashion, but you can still use the plugin by right clicking in your Kotlin file, and selecting `Format Document`.
+```bash
+cd /path/to/project
 
-Follow [this PR](https://github.com/prettier/prettier-vscode/pull/757) for more info.
+## initialise an npm project if you haven’t done it yet
+npm init
+## or
+yarn init
 
-## Run tests
-
-```sh
-npm run test
+## add Prettier and its Kotlin plugin to project’s dev dependencies
+npm install --dev prettier prettier-plugin-kotlin
+## or
+yarn add --dev prettier prettier-plugin-kotlin
 ```
+
+<!-- Global use of plugin is blocked by https://github.com/prettier/prettier/issues/4000 -->
+
+## Usage
+
+````bash
+## format all kotlin files in your project
+./node_modules/.bin/prettier --write "**/*.kt"
+## or
+yarn prettier --write "**/*.kt"
+````
+
+## Integration with editors
+
+If you are using a text editor that supports Prettier integration (e.g. [Atom](https://atom.io/packages/prettier-atom)), you can have all Prettier perks for your Kotlin code too!
+
+> Use of this plugin in [VSCode extension](https://github.com/prettier/prettier-vscode) seems to be blocked by [prettier/prettier-vscode#395](https://github.com/prettier/prettier-vscode/issues/395).
+> Feel free to help!
+
+In order to get `prettier-plugin-kotlin` working in projects that do not have local npm dependencies, you can install this plugin globally:
+
+```bash
+npm install --global prettier prettier-plugin-kotlin
+```
+
+In this case, you might need to check the settings of your editor’s Prettier extension to make sure that a globally installed Prettier is used when it is not found in project dependencies (i.e. `package.json`).
+
+Nevertheless, it is recommended to rely on local copies of `prettier` and `prettier-plugin-kotlin` as this reduces the chance of formatting conflicts between project collaborators.
+This may happen if different global versions of Prettier or its Kotlin plugin are used.
+
+Installing `prettier-plugin-kotlin` either locally or globally may require you to restart the editor if formatting does not work right away.
 
 ## Author
 
