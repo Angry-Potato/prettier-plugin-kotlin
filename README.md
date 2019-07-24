@@ -94,6 +94,12 @@ This may happen if different global versions of Prettier or its Kotlin plugin ar
 
 Installing `prettier-plugin-kotlin` either locally or globally may require you to restart the editor if formatting does not work right away.
 
+## Known VSCode Issue
+
+If you've managed to install `prettier-plugin-kotlin` and `formatOnSave` doesn't work, but right-clicking and selecting `Format Document` works fine, you need to increase the `formatOnSaveTimeout`.
+
+You can do this by opening your settings window (`Ctrl+,`), and searching `formatOnSave`, then setting the value of `formatOnSaveTimeout` to 5000. This will be fixed as we improve performance of the plugin.
+
 ## Author
 
 👤 **Liam Humphreys**
