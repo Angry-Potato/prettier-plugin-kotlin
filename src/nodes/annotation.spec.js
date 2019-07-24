@@ -14,8 +14,6 @@ package org.jetbrains.demo`).toMatchFormat());
 
   test("annotation use-site targets", () =>
     expect(
-      "class Example(@field:Ann.Thing val foo: Int, @get:Ann val bar: String, @param:Ann val quux: Int)"
-    ).toChangeFormat(
-      "class Example(\n  @field:Ann.Thing val foo: Int,\n  @get:Ann val bar: String,\n  @param:Ann val quux: Int\n)"
-    ));
+      "class Example(@field:Ann.Thing  val foo: Int, @get:Ann  val bar: String, @param:Ann  val quux: Int)"
+    ).toMatchFormat());
 });

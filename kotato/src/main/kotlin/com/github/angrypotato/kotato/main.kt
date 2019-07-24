@@ -8,12 +8,11 @@ import com.github.ajalt.clikt.output.CliktHelpFormatter
 import com.github.ajalt.clikt.output.HelpFormatter
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.mordant.TermColors
-import kastree.ast.psi.Parser
-import kastree.ast.psi.Converter
 import java.io.File
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import java.io.*
 
 
 class ColorHelpFormatter : CliktHelpFormatter() {
@@ -33,7 +32,9 @@ class Kotato : NoRunCliktCommand(help = "Simple little cli app to work with kotl
     }
 }
 
-class Parse : CliktCommand(help = "Parses kotlin code from STDIN and outputs its AST in JSON") {
+data class SerializedFile(val file: Node.File, val extrasMap: Converter.WithExtras) : Serializable
+
+class Parse : CliktCommand(help = "Parses kotlin code from STDIN and outputs its AST in BINARY") {
     init {
         context { helpFormatter = ColorHelpFormatter() }
     }
@@ -42,9 +43,28 @@ class Parse : CliktCommand(help = "Parses kotlin code from STDIN and outputs its
         val code = generateSequence(::readLine).joinToString("\n")
         val extrasMap = Converter.WithExtras()
         val file = Parser(extrasMap).parseFile(code)
+        val serializedFile = SerializedFile(file, extrasMap)
+        val ser = ObjectSerializer.serialize(serializedFile)
+        val container = mapOf("astNode" to ser)
         val gson = GsonBuilder().setPrettyPrinting().create()
-        println(gson.toJson(file))
+        println(gson.toJson(container))
     }
 }
 
-fun main(args: Array<String>) = Kotato().subcommands(Parse()).main(args)
+class Write : CliktCommand(help = "Parses AST in BINARY from STDIN and Writes kotlin code to STDOUT") {
+    init {
+        context { helpFormatter = ColorHelpFormatter() }
+    }
+
+    override fun run() {
+        val ast = generateSequence(::readLine).joinToString("\n")
+        val deser: SerializedFile? = ObjectSerializer.deserialize(ast)
+        if (deser != null) {
+            if (deser.file != null && deser.extrasMap != null) {
+                println(Writer.write(deser.file, deser.extrasMap))
+            }
+        }
+    }
+}
+
+fun main(args: Array<String>) = Kotato().subcommands(Parse(), Write()).main(args)

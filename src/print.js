@@ -1,23 +1,21 @@
-const { determineNodePrinter } = require("./nodes");
-const glob = require("glob");
 const path = require("path");
+const { spawnSync } = require("child_process");
 
-const NODES_DIR = "./src/nodes";
+module.exports = (astPath, opts, print) => {
+  const node = astPath.getValue();
+  const child = spawnSync(
+    "java",
+    ["-jar", path.join(__dirname, "./kotato"), "write"],
+    {
+      input: node.astNode
+    }
+  );
 
-const nodePrinters = glob
-  .sync(`${NODES_DIR}/**/*.js`, {
-    ignore: `${NODES_DIR}/**/*spec.js`
-  })
-  .map(file => require(path.resolve(file)));
-
-module.exports = (path, opts, print) => {
-  const node = path.getValue();
-
-  if (!node) {
-    return "";
+  const error = child.stderr.toString();
+  if (error) {
+    throw new Error(error);
   }
 
-  const nodePrinter = determineNodePrinter(node, nodePrinters);
-
-  return nodePrinter.print(path, opts, print);
+  const response = child.stdout.toString();
+  return response;
 };

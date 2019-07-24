@@ -10,8 +10,8 @@ import com.github.ajalt.clikt.output.CliktHelpFormatter
 import com.github.ajalt.clikt.output.HelpFormatter
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.mordant.TermColors
-import kastree.ast.psi.Parser
-import kastree.ast.psi.Converter
+import com.github.angrypotato.kotato.Parser
+import com.github.angrypotato.kotato.Converter
 import java.io.File
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder as poo
@@ -63,5 +63,6 @@ class Parse : CliktCommand(help = "Parses kotlin code from STDIN and outputs its
         println(gson.toJson(file))
     }
 }
-
+//plop
 fun main(args: Array<String>) = Kotato().subcommands(Parse()).main(args)
+//

@@ -35,10 +35,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.github.ajalt:clikt:2.0.0'
     implementation 'com.github.ajalt:mordant:1.2.1'
-    implementation 'com.github.cretz.kastree:kastree-ast-jvm:0.4.0'
-    implementation 'com.github.cretz.kastree:kastree-ast-psi:0.4.0'
-    implementation 'com.github.cretz.kastree:kastree-ast-common:0.4.0'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation "org.jetbrains.kotlin:kotlin-compiler-embeddable:$kotlin_version"
 }
 
 compileKotlin {

@@ -26,7 +26,10 @@ const checkFormat = (before, after, config) => {
     const { formatted } = formatAST(JSON.parse(response), opts);
 
     resolve({
-      pass: formatted === `${after}\n` || formatted === after,
+      pass:
+        formatted === `${after}\n` ||
+        formatted === `${after}\n\n` ||
+        formatted === after,
       message: () =>
         `Expected:
   ${JSON.stringify(after)}
