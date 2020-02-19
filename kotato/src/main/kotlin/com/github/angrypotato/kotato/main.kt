@@ -40,7 +40,7 @@ class Parse : CliktCommand(help = "Parses kotlin code from STDIN and outputs its
     }
 
     override fun run() {
-        val code = generateSequence(::readLine).joinToString("\n")
+        val code = System.`in`.readBytes().toString(charset("utf-8"))
         val extrasMap = Converter.WithExtras()
         val file = Parser(extrasMap).parseFile(code)
         val serializedFile = SerializedFile(file, extrasMap)
@@ -57,7 +57,7 @@ class Write : CliktCommand(help = "Parses AST in BINARY from STDIN and Writes ko
     }
 
     override fun run() {
-        val ast = generateSequence(::readLine).joinToString("\n")
+        val ast = System.`in`.readBytes().toString(charset("iso-8859-1"))
         val deser: SerializedFile? = ObjectSerializer.deserialize(ast)
         if (deser != null) {
             if (deser.file != null && deser.extrasMap != null) {
