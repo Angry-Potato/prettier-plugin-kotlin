@@ -1,5 +1,8 @@
 package com.github.angrypotato.kotato
 
+import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
+import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
+import org.jetbrains.kotlin.cli.common.messages.PrintingMessageCollector
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
@@ -13,9 +16,14 @@ import org.jetbrains.kotlin.psi.psiUtil.collectDescendantsOfType
 
 open class Parser(val converter: Converter = Converter) {
     protected val proj by lazy {
+        val configuration = CompilerConfiguration()
+        configuration.put(
+            CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY,
+            PrintingMessageCollector(System.err, MessageRenderer.PLAIN_FULL_PATHS, false)
+        )
         KotlinCoreEnvironment.createForProduction(
             Disposer.newDisposable(),
-            CompilerConfiguration(),
+            configuration,
             EnvironmentConfigFiles.JVM_CONFIG_FILES
         ).project
     }
