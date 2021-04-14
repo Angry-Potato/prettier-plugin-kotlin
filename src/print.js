@@ -7,7 +7,7 @@ module.exports = (astPath, opts, print) => {
     "java",
     ["-jar", path.join(__dirname, "./kotato"), "write"],
     {
-      input: node.astNode
+      input: Buffer.from(node.astNode, "binary")
     }
   );
 

@@ -54,6 +54,6 @@ task fatJar(type: Jar) {
         	'Main-Class': 'com.github.angrypotato.kotato.MainKt'
     }
     baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
